@@ -4,7 +4,7 @@ const MidLineBox = ({w, h, scale, onClick}) => {
     const {getBlockStyle, getCircleStyle, getLineStyle} = useStyle(w, h, scale)
     return (
         <React.Fragment>
-            <div style = {getCircleStyle()}>
+            <div onClick = {onClick} style = {getCircleStyle()}>
             </div>
             <div style = {getLineStyle(w, h)}>
             </div>

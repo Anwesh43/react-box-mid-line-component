@@ -1,5 +1,8 @@
 import {useState, useEffect} from 'react'
 import {resizeCb, divideScale, sinify} from './utils'
+
+const parts = 4
+
 export const useAnimatedScale = (scGap = 0.02, delay = 20) => {
     const [scale, setScale] = useState(0)
     const [animated, setAnimated] = useState(false)
@@ -10,7 +13,7 @@ export const useAnimatedScale = (scGap = 0.02, delay = 20) => {
                 setAnimated(true)
                 let currScale = 0 
                 const interval = setInterval(() => {
-                    currScale += scGap 
+                    currScale += (scGap / parts) 
                     setScale(currScale)
                     if (currScale > 1) {
                         setScale(0)
@@ -41,9 +44,9 @@ export const useDimension = () => {
 
 export const useStyle = (w, h, scale) => {
     const sf = sinify(scale)
-    const sf1 = divideScale(sf, 0, 3)
-    const sf2 = divideScale(sf, 1, 3)
-    const sf3 = divideScale(sf, 2, 3)
+    const sf1 = divideScale(sf, 0, parts)
+    const sf2 = divideScale(sf, 1, parts)
+    const sf3 = divideScale(sf, 2, parts)
     const size = Math.min(w, h) / 10
     const r = size / 3
     const position = 'absolute'
@@ -51,6 +54,7 @@ export const useStyle = (w, h, scale) => {
     const background = '#3F51B5'
     const y = h / 2
     const gap = Math.min(w, h) / 7
+    const strokeFactor = 90
     return {
         getBlockStyle(i) {
             const left = `${x - (size / 2) * sf2}px` 
@@ -68,11 +72,12 @@ export const useStyle = (w, h, scale) => {
             return {left, top, height, width, position, borderRadius, background}
         },
         getLineStyle() {
-            const width = `${gap * 2}px`
-            const height = `${Math.min(w, h) / 60}px`
-            const left = `${x - gap}px`
-            const top = `${y - (Math.min(w, h) / 120)}px`
-            return {left, top, width, height, background}
+            const width = `${gap * 2 * sf1}px`
+            const height = `${Math.min(w, h) / strokeFactor}px`
+            const left = `${x - gap * sf1}px`
+            const top = `${y - (Math.min(w, h) / (strokeFactor * 2))}px`
+            const WebkitTransform = `rotate(${90 * sf3}deg)`
+            return {position, left, top, width, height, background, WebkitTransform}
         }
     }
 }
