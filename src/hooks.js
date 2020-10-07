@@ -34,7 +34,7 @@ export const useDimension = () => {
             setW(window.innerWidth)
             setH(window.innerHeight)
         }) 
-        return resizeCb(() => {})
+        return () => resizeCb(() => {})
     })
     return {
         w, 
@@ -48,7 +48,7 @@ export const useStyle = (w, h, scale) => {
     const sf2 = divideScale(sf, 1, parts)
     const sf3 = divideScale(sf, 2, parts)
     const size = Math.min(w, h) / 10
-    const r = size / 3
+    const r = size / 1.5
     const position = 'absolute'
     const x = w / 2 
     const background = '#3F51B5'
