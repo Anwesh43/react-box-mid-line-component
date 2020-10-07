@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-
+import {resizeCb, divideScale, sinify} from './utils'
 export const useAnimatedScale = (scGap = 0.02, delay = 20) => {
     const [scale, setScale] = useState(0)
     const [animated, setAnimated] = useState(false)
@@ -20,5 +20,21 @@ export const useAnimatedScale = (scGap = 0.02, delay = 20) => {
                 }, delay)
             }
         }
+    }
+}
+
+export const useDimension = () => {
+    const [w, setW] = useState(window.innerWidth)
+    const [h, setH] = useState(window.innerHeight)
+    useEffect(() => {
+        resizeCb(() => {
+            setW(window.innerWidth)
+            setH(window.innerHeight)
+        }) 
+        return resizeCb(() => {})
+    })
+    return {
+        w, 
+        h       
     }
 }
